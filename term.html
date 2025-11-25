@@ -1,1220 +1,331 @@
-<!-- This is the main AURAA file -->
+<!-- This is the term file -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURAA - Your AI Companion</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>AURAA - Terms and Conditions</title>
     <style>
-        :root {
-            --font-primary: 'Inter', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --border-radius-main: 32px;
-            --border-radius-msg: 24px;
-            --border-radius-small: 16px;
-            --shadow-glow: 0 0 40px rgba(123, 31, 162, 0.4), 0 0 80px rgba(0, 188, 212, 0.2);
-            --shadow-ultra: 0 50px 100px -20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
-            --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .theme-dark {
-            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --bg-main: radial-gradient(ellipse at top, #1a1a2e 0%, #16213e 40%, #0f0f23 100%);
-            --bg-particles: 
-                radial-gradient(circle at 15% 25%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 85% 75%, rgba(240, 147, 251, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.06) 0%, transparent 50%);
-            --surface: rgba(255, 255, 255, 0.05);
-            --surface-hover: rgba(255, 255, 255, 0.1);
-            --glass: rgba(255, 255, 255, 0.08);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --border: rgba(255, 255, 255, 0.15);
-            --glow-primary: 0 0 60px rgba(102, 126, 234, 0.3);
-            --glow-secondary: 0 0 60px rgba(240, 147, 251, 0.3);
-        }
-
-        .theme-light {
-            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --bg-main: radial-gradient(ellipse at top, #f8fafc 0%, #e2e8f0 40%, #cbd5e1 100%);
-            --bg-particles: 
-                radial-gradient(circle at 15% 25%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 85% 75%, rgba(240, 147, 251, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.03) 0%, transparent 50%);
-            --surface: rgba(255, 255, 255, 0.9);
-            --surface-hover: rgba(255, 255, 255, 0.95);
-            --glass: rgba(255, 255, 255, 0.7);
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --border: rgba(0, 0, 0, 0.1);
-            --glow-primary: 0 0 40px rgba(102, 126, 234, 0.2);
-            --glow-secondary: 0 0 40px rgba(240, 147, 251, 0.2);
-        }
-
-        * {
+        body {
+            background-color: #000000;
+            color: #cccccc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-primary);
-            background: var(--bg-main);
-            background-attachment: fixed;
-            color: var(--text-primary);
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
         }
 
-        
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .header {
             width: 100%;
-            height: 100%;
-            background: var(--bg-particles);
-            z-index: -2;
-            animation: bgShift 20s ease-in-out infinite;
-        }
-
-        @keyframes bgShift {
-            0%, 100% { transform: translateX(0) translateY(0) scale(1); }
-            33% { transform: translateX(-20px) translateY(-10px) scale(1.02); }
-            66% { transform: translateX(20px) translateY(10px) scale(0.98); }
-        }
-
-        
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            filter: blur(1px);
-            animation: float 20s infinite ease-in-out;
-            z-index: -1;
-        }
-
-        .orb-1 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
-            top: -150px;
-            left: -150px;
-            animation-delay: 0s;
-        }
-
-        .orb-2 {
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(240, 147, 251, 0.12) 0%, transparent 70%);
-            top: 20%;
-            right: -100px;
-            animation-delay: -7s;
-        }
-
-        .orb-3 {
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(79, 172, 254, 0.1) 0%, transparent 70%);
-            bottom: -125px;
-            left: 30%;
-            animation-delay: -14s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-30px) rotate(120deg); }
-            66% { transform: translateY(15px) rotate(240deg); }
-        }
-
-        
-        .nav-header {
-            background: var(--glass);
-            backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid var(--border);
-            padding: 20px 40px;
+            padding: 20px 0;
             display: flex;
-            justify-content: space-between;
+            justify-content: center; 
             align-items: center;
-            position: relative;
-            z-index: 1000;
+            background-color: #0a0a0a; 
+            border-bottom: 1px solid #333333;
         }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: -0.02em;
-            background: var(--primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .brand-icon {
-            width: 50px;
+        .logo {
+            width: 50px; 
             height: 50px;
-            background: var(--primary);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 900;
-            color: white;
-            box-shadow: var(--glow-primary);
-            animation: iconPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); box-shadow: var(--glow-primary); }
-            50% { transform: scale(1.05); box-shadow: var(--glow-secondary); }
-        }
-
-        .nav-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s;
-        }
-
-        .nav-btn:hover {
-            background: var(--surface-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .nav-btn:hover::before {
-            left: 100%;
-        }
-
-        .nav-btn svg {
-            width: 20px;
-            height: 20px;
-            stroke: var(--text-primary);
-            transition: all var(--transition-smooth);
-        }
-
-        .theme-toggle {
-            width: 56px;
-            height: 28px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            position: relative;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-        }
-
-        .theme-toggle::before {
-            content: '';
-            width: 24px;
-            height: 24px;
-            background: var(--primary);
-            border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: all var(--transition-bounce);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .theme-light .theme-toggle::before {
-            transform: translateX(28px);
-        }
-
-       
-        .main-container {
-            flex: 1;
+            border: 2px solid #ffffff;
+            border-radius: 50%; 
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
         }
 
-        .chat-container {
-            width: 100%;
-            max-width: 1000px;
-            height: 80vh;
-            background: var(--glass);
-            backdrop-filter: blur(40px) saturate(200%);
-            border: 1px solid var(--border);
-            border-radius: var(--border-radius-main);
-            box-shadow: var(--shadow-ultra);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-            animation: containerEntry 1s var(--transition-bounce);
+        .logo-triangle {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 25px solid #ffffff; 
         }
 
-        @keyframes containerEntry {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .chat-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--glow-primary);
-            opacity: 0.1;
-            border-radius: var(--border-radius-main);
-            filter: blur(60px);
-            z-index: -1;
-        }
-
-        
-        .messages-container {
-            flex: 1;
-            padding: 32px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .messages-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .messages-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .messages-container::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 20px 24px;
-            border-radius: var(--border-radius-msg);
-            position: relative;
-            animation: messageSlideIn 0.6s var(--transition-bounce);
-            word-wrap: break-word;
-            line-height: 1.6;
-        }
-
-        @keyframes messageSlideIn {
-            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .user-message {
-            background: var(--primary);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 8px;
-            box-shadow: var(--glow-primary);
-        }
-
-        .auraa-message {
-            background: var(--surface);
-            color: var(--text-primary);
-            align-self: flex-start;
-            border-bottom-left-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .message-time {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 8px;
-            font-family: var(--font-mono);
-        }
-
-        .user-message .message-time {
-            text-align: right;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        
-        .typing-indicator {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            padding: 16px 24px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--border-radius-msg);
-            align-self: flex-start;
-            max-width: 120px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: typingBounce 1.4s infinite ease-in-out;
-        }
-
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes typingBounce {
-            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-            40% { transform: scale(1.2); opacity: 1; }
-        }
-
-        
-        .input-container {
-            padding: 32px;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            position: relative;
-        }
-
-        .input-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(102, 126, 234, 0.5) 25%, 
-                rgba(240, 147, 251, 0.5) 50%, 
-                rgba(79, 172, 254, 0.5) 75%, 
-                transparent 100%);
-            animation: inputGlow 3s ease-in-out infinite;
-            opacity: 0;
-            transition: opacity var(--transition-smooth);
-        }
-
-        .input-container:focus-within::before {
-            opacity: 1;
-        }
-
-        @keyframes inputGlow {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
-        }
-
-        .input-wrapper {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .input-field {
-            flex: 1;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 24px;
-            padding: 16px 24px;
-            font-size: 16px;
-            color: var(--text-primary);
-            outline: none;
-            transition: all var(--transition-smooth);
-            font-family: var(--font-primary);
-        }
-
-        .input-field::placeholder {
-            color: var(--text-muted);
-        }
-
-        .input-field:focus {
-            border-color: transparent;
-            background: var(--surface-hover);
-            box-shadow: var(--glow-primary);
-            transform: translateY(-2px);
-        }
-
-        .send-btn {
-            width: 56px;
-            height: 56px;
-            background: var(--primary);
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--glow-primary);
-        }
-
-        .send-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: conic-gradient(from 0deg, 
-                rgba(102, 126, 234, 0.8), 
-                rgba(240, 147, 251, 0.8), 
-                rgba(79, 172, 254, 0.8), 
-                rgba(102, 126, 234, 0.8));
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity var(--transition-smooth);
-        }
-
-        .send-btn:hover::before {
-            opacity: 1;
-            animation: rotate 2s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .send-btn:hover {
-            transform: translateY(-4px) scale(1.1);
-            box-shadow: var(--glow-secondary);
-        }
-
-        .send-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
-            position: relative;
-            z-index: 1;
-            transition: all var(--transition-smooth);
-        }
-
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            animation: modalFadeIn 0.3s ease-out;
-        }
-
-        @keyframes modalFadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--glass);
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border);
-            border-radius: var(--border-radius-main);
-            padding: 40px;
-            max-width: 500px;
+        .container {
             width: 90%;
-            box-shadow: var(--shadow-ultra);
-            animation: modalSlideIn 0.4s var(--transition-bounce);
-        }
-
-        @keyframes modalSlideIn {
-            0% { opacity: 0; transform: translate(-50%, -60%) scale(0.9); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            background: var(--primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .close-btn {
-            width: 32px;
-            height: 32px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-        }
-
-        .close-btn:hover {
-            background: var(--surface-hover);
-            transform: scale(1.1);
-        }
-
-        .modal-body {
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .modal-body p {
-            margin-bottom: 16px;
-        }
-
-        .highlight-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-left: 4px solid;
-            border-left-color: transparent;
-            border-image: var(--primary) 1;
-            border-radius: 12px;
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
+            background-color: #121212; 
+            border: 1px solid #282828;
+            border-radius: 8px; 
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+        }
+
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            color: #e0e0e0;
+            font-size: 1.3em;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #444444;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            color: #4A90E2; 
+            font-size: 1.1em;
             margin-top: 20px;
         }
 
-        .highlight-box h4 {
-            color: var(--text-primary);
-            margin-bottom: 12px;
-            font-weight: 600;
+        p, li {
+            color: #b0b0b0;
+            line-height: 1.6;
+            font-size: 0.95em;
+            text-align: justify;
         }
 
-        .highlight-box ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .highlight-box li {
-            padding: 4px 0;
-            position: relative;
+        ul {
             padding-left: 20px;
+            list-style-type: square;
         }
 
-        .highlight-box li::before {
-            content: '•';
-            color: var(--text-primary);
-            position: absolute;
-            left: 0;
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #1a1a1a; 
+            border: 1px solid #303030;
+            border-radius: 5px;
         }
 
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .form-input {
+        .buttons-container {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #0a0a0a;
+            border-top: 1px solid #333333;
             width: 100%;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 14px;
-            color: var(--text-primary);
-            outline: none;
-            transition: all var(--transition-smooth);
+            position: sticky;
+            bottom: 0;
         }
 
-        .form-input:focus {
-            border-color: transparent;
-            box-shadow: var(--glow-primary);
-        }
-
-        .btn {
-            background: var(--primary);
+        .button {
+            background-color: #4A90E2; 
             color: white;
             border: none;
-            border-radius: 12px;
-            padding: 12px 24px;
-            font-size: 14px;
-            font-weight: 500;
+            padding: 12px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 15px;
             cursor: pointer;
-            transition: all var(--transition-smooth);
-            margin-right: 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
         }
 
-        .btn:hover {
+        .button:hover {
+            background-color: #357ABD; 
             transform: translateY(-2px);
-            box-shadow: var(--glow-primary);
         }
 
-        .btn-secondary {
-            background: var(--surface);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
+        .button:active {
+            transform: translateY(0);
         }
 
-        .btn-secondary:hover {
-            background: var(--surface-hover);
-            box-shadow: none;
+        .button-decline {
+            background-color: #D0021B; 
         }
 
-        
-        .setting-item {
-            display: flex;
-            justify-content: space-between;
+        .button-decline:hover {
+            background-color: #A90115;
+        }
+
+        .video-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
             align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--border);
+            z-index: 1000;
         }
 
-        .setting-item:last-child {
-            border-bottom: none;
-        }
-
-        .setting-info h5 {
-            margin-bottom: 4px;
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        .setting-info p {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        .switch {
-            width: 48px;
-            height: 24px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        .video-popup-content {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
             position: relative;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
         }
 
-        .switch.active {
-            background: var(--primary);
-            border-color: transparent;
+        .video-popup-content iframe {
+            width: 560px; 
+            height: 315px;
+            border: none;
         }
 
-        .switch-handle {
-            width: 20px;
-            height: 20px;
-            background: white;
+        .close-popup {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #D0021B;
+            color: white;
+            border: none;
             border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: all var(--transition-bounce);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+        }
+                
+        .legal-notice {
+            background-color: #222;
+            border-left: 4px solid #D0021B;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+        .legal-notice p {
+            margin: 5px 0;
         }
 
-        .switch.active .switch-handle {
-            transform: translateX(24px);
-        }
-
-       
-        @media (max-width: 768px) {
-            .nav-header {
-                padding: 16px 20px;
-            }
-
-            .nav-brand {
-                font-size: 24px;
-                gap: 12px;
-            }
-
-            .brand-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-
-            .nav-controls {
-                gap: 8px;
-            }
-
-            .nav-btn {
-                width: 40px;
-                height: 40px;
-            }
-
-            .main-container {
-                padding: 20px 10px;
-            }
-
-            .chat-container {
-                height: 85vh;
-                border-radius: 24px;
-            }
-
-            .messages-container {
-                padding: 20px;
-                gap: 16px;
-            }
-
-            .message {
-                max-width: 90%;
-                padding: 16px 20px;
-            }
-
-            .input-container {
-                padding: 20px;
-            }
-
-            .input-wrapper {
-                gap: 12px;
-            }
-
-            .send-btn {
-                width: 48px;
-                height: 48px;
-            }
-
-            .modal-content {
-                padding: 24px;
-                border-radius: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .chat-container {
-                height: 90vh;
-                border-radius: 16px;
-            }
-
-            .modal-content {
-                padding: 20px;
-                width: 95%;
-            }
-        }
-
-        
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
     </style>
 </head>
-<body class="theme-dark">
-    
-    <div class="bg-animation"></div>
-    
-    
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+<body>
 
-    
-    <nav class="nav-header">
-        <div class="nav-brand">
-            <div class="brand-icon">A</div>
-            AURAA
-        </div>
-        <div class="nav-controls">
-            <button class="nav-btn" id="info-btn" aria-label="Information">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 16v-4m0-4h.01"></path>
-                </svg>
-            </button>
-            <button class="nav-btn" id="auth-btn" aria-label="Sign In">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-            </button>
-            <button class="nav-btn" id="settings-btn" aria-label="Settings">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
-                </svg>
-            </button>
-            <div class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme"></div>
-        </div>
-    </nav>
-
-    
-    <div class="main-container">
-        <div class="chat-container">
-            <div class="messages-container" id="messages">
-                <div class="typing-indicator" id="typing">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            </div>
-            <div class="input-container">
-                <div class="input-wrapper">
-                    <input type="text" 
-                           class="input-field" 
-                           id="user-input" 
-                           placeholder="Ask AURAA anything..." 
-                           autocomplete="off">
-                    <button class="send-btn" id="send-btn" aria-label="Send Message">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-triangle"></div>
         </div>
     </div>
 
-    
-    <div class="modal" id="info-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">About AURAA</h2>
-                <button class="close-btn" id="info-close" aria-label="Close">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><strong>AURAA's frontend has been developed by Sarnab Bhattacharjee.</strong></p>
-                <p>The brain of AURAA is powered by <strong>Google GEMINI API</strong>. This is because Sarnab doesn't have a powerful laptop or computer to work on API building. If he had one, he would have built his own custom AI system.</p>
-                <p>AURAA is designed to be your intelligent companion, ready to help with various tasks and conversations.</p>
+    <div class="container">
+        <h1>Terms and Conditions for AURAA AI</h1>
+
+        <div class="section">
+            <h2>Welcome to AURAA!</h2>
+            <p>These terms and conditions outline the rules and regulations for the use of AURAA AI, developed by @Sarnab. By accessing or using AURAA, we assume you accept these terms and conditions in full. Do not continue to use AURAA if you do not accept all of the terms and conditions stated on this page.</p>
+        </div>
+
+        <div class="section">
+            <h2>1. License to Use</h2>
+            <p>Subject to your compliance with these Terms, @Sarnab grants you a limited, non-exclusive, non-transferable, non-sublicensable license to access and use AURAA for your personal, non-commercial purposes, unless otherwise agreed upon in writing.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Restrictions on Use</h2>
+            <p>You expressly agree not to:</p>
+            <ul>
+                <li>Copy, modify, distribute, sell, or lease any part of AURAA's underlying software, code, source code, or algorithms.</li>
+                <li>Attempt to reverse engineer, decompile, disassemble, or otherwise attempt to discover the source code or underlying ideas or algorithms of AURAA.</li>
+                <li>Use any automated system, including without limitation "robots," "spiders," or "offline readers," to access AURAA in a manner that sends more request messages to the AURAA servers than a human can reasonably produce in the same period by using a conventional on-line web browser.</li>
+                <li>Use AURAA for any illegal purpose or in violation of any local, state, national, or international law.</li>
+                <li>Inspect element, use browser developer tools, or any similar methods to access, extract, or analyze AURAA's code, structure, or content for the purpose of replicating, distributing, or claiming it as your own.</li>
+                <li>Claim any part of AURAA, its code, source code, design, or intellectual property as your own work or property without the explicit prior written permit from @Sarnab.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Intellectual Property</h2>
+            <p>All intellectual property rights in AURAA, including but not limited to its software, code, source code, branding, design elements, and content, are the sole property of @Sarnab or its licensors. These Terms do not grant you any rights to use @Sarnab's or AURAA's trademarks, logos, domain names, or other distinctive brand features without explicit written permission.</p>
+        </div>
+
+        <div class="section">
+            <h2>4. Violation of Terms and Legal Action</h2>
+            <p>If you violate any of these Terms and Conditions, your permission to use AURAA will automatically terminate. @Sarnab reserves the right to take strict action against any user found in violation of these terms. Unauthorized use, reproduction, or distribution of AURAA's code and intellectual property constitutes copyright infringement.</p>
+
+            <div class="legal-notice">
+                <h3>📜 Relevant Legal Framework</h3>
+                <p>Using someone else's code without permission violates copyright law, which protects original works of authorship, including software. The following legal standards are applicable:</p>
                 
-                <div class="highlight-box">
-                    <h4>Technical Specifications</h4>
-                    <ul>
-                        <li>Built with modern web technologies</li>
-                        <li>Ultra-premium glass morphism design</li>
-                        <li>Advanced animation system</li>
-                        <li>Responsive design for all devices</li>
-                        <li>Real-time chat interface</li>
-                        <li>Dark/Light theme support</li>
-                        <li>Floating particle background</li>
-                        <li>Hardware-accelerated animations</li>
-                    </ul>
-                </div>
+                <h4>U.S. Copyright Law (Title 17, U.S. Code § 106)</h4>
+                <p>The owner of a copyright has exclusive rights to do and authorize the following:</p>
+                <ul>
+                    <li>To reproduce the copyrighted work.</li>
+                    <li>To prepare derivative works based upon the copyrighted work.</li>
+                    <li>To distribute copies of the work to the public.</li>
+                    <li>To perform or display the copyrighted work publicly.</li>
+                </ul>
+                <p><strong>Violation of any of these rights without permission constitutes copyright infringement.</strong></p>
+
+                <h4>🌍 International Protection: The Berne Convention</h4>
+                <p>Most countries, through adherence to the Berne Convention, provide automatic copyright protection for literary and artistic works, including software, without requiring formal registration.</p>
+
+                <h3>🚨 Penalties for Infringement</h3>
+                <p>Violation can result in significant penalties, including:</p>
+                <ul>
+                    <li><strong>Civil Lawsuits:</strong> Financial penalties may include actual damages, lost profits, and statutory damages (up to $150,000 for willful infringement in the U.S.).</li>
+                    <li><strong>Criminal Penalties:</strong> In cases of willful infringement, penalties may include substantial fines and potential imprisonment (e.g., under Title 17, U.S. Code § 506).</li>
+                </ul>
             </div>
+            <p><em>Disclaimer: The legal information provided herein is for informational purposes only and does not constitute legal advice. You should consult with a qualified legal professional for advice regarding your individual situation.</em></p>
         </div>
+
+         <div class="section">
+            <h2>5. Disclaimer of Warranties</h2>
+            <p>AURAA is provided "as is" and "as available" without any warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. @Sarnab does not warrant that AURAA will be uninterrupted, error-free, or completely secure.</p>
+        </div>
+
+        <div class="section">
+            <h2>6. Limitation of Liability</h2>
+            <p>To the fullest extent permitted by applicable law, @Sarnab shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from (a) your access to or use of or inability to access or use AURAA; (b) any conduct or content of any third party on AURAA; or (c) unauthorized access, use, or alteration of your transmissions or content.</p>
+        </div>
+
     </div>
 
-    
-    <div class="modal" id="auth-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Sign In to AURAA</h2>
-                <button class="close-btn" id="auth-close" aria-label="Close">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label" for="email">Email Address</label>
-                    <input type="email" class="form-input" id="email" placeholder="Enter your email">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="password">Password</label>
-                    <input type="password" class="form-input" id="password" placeholder="Enter your password">
-                </div>
-                <button class="btn">Sign In</button>
-                <button class="btn btn-secondary">Create Account</button>
-            </div>
-        </div>
+    <div class="buttons-container">
+        <button class="button" id="acceptButton">Accept / Agree</button>
+        <button class="button button-decline" id="declineButton">Decline / Disagree</button>
     </div>
 
-    
-    <div class="modal" id="settings-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Settings</h2>
-                <button class="close-btn" id="settings-close" aria-label="Close">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h5>Dark Mode</h5>
-                        <p>Toggle between dark and light themes</p>
-                    </div>
-                    <div class="switch active" id="theme-switch">
-                        <div class="switch-handle"></div>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h5>Animations</h5>
-                        <p>Enable smooth animations and transitions</p>
-                    </div>
-                    <div class="switch active" id="animations-switch">
-                        <div class="switch-handle"></div>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h5>Sound Effects</h5>
-                        <p>Enable notification sounds</p>
-                    </div>
-                    <div class="switch" id="sound-switch">
-                        <div class="switch-handle"></div>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h5>Auto-scroll</h5>
-                        <p>Automatically scroll to new messages</p>
-                    </div>
-                    <div class="switch active" id="scroll-switch">
-                        <div class="switch-handle"></div>
-                    </div>
-                </div>
-            </div>
+    <div class="video-popup" id="videoPopup">
+        <div class="video-popup-content">
+            <button class="close-popup" id="closePopupButton">×</button>
+            <iframe id="youtubeVideo" width="560" height="315" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
 
     <script>
-        
-        const messagesContainer = document.getElementById('messages');
-        const userInput = document.getElementById('user-input');
-        const sendBtn = document.getElementById('send-btn');
-        const typingIndicator = document.getElementById('typing');
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
+        document.getElementById('acceptButton').addEventListener('click', function() {
+            window.location.href = 'term.html'; 
+        });
 
-        
-        const modals = {
-            info: {
-                modal: document.getElementById('info-modal'),
-                btn: document.getElementById('info-btn'),
-                close: document.getElementById('info-close')
-            },
-            auth: {
-                modal: document.getElementById('auth-modal'),
-                btn: document.getElementById('auth-btn'),
-                close: document.getElementById('auth-close')
-            },
-            settings: {
-                modal: document.getElementById('settings-modal'),
-                btn: document.getElementById('settings-btn'),
-                close: document.getElementById('settings-close')
+        const declineButton = document.getElementById('declineButton');
+        const videoPopup = document.getElementById('videoPopup');
+        const closePopupButton = document.getElementById('closePopupButton');
+        const youtubeVideo = document.getElementById('youtubeVideo');
+        const youtubeVideoId = 'czUMDiWY2bM'; 
+
+        declineButton.addEventListener('click', function() {
+            youtubeVideo.src = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1`;
+            videoPopup.style.display = 'flex';
+        });
+
+        closePopupButton.addEventListener('click', function() {
+            youtubeVideo.src = ''; 
+            videoPopup.style.display = 'none';
+        });
+
+        // This is an Optional for prank LOL: Closes popup if clicked outside the video content
+        videoPopup.addEventListener('click', function(event) {
+            if (event.target === videoPopup) {
+                youtubeVideo.src = ''; 
+                videoPopup.style.display = 'none';
             }
-        };
-
-        
-        const switches = {
-            theme: document.getElementById('theme-switch'),
-            animations: document.getElementById('animations-switch'),
-            sound: document.getElementById('sound-switch'),
-            scroll: document.getElementById('scroll-switch')
-        };
-
-        
-        function toggleTheme() {
-            body.classList.toggle('theme-dark');
-            body.classList.toggle('theme-light');
-            const isDark = body.classList.contains('theme-dark');
-            switches.theme.classList.toggle('active', isDark);
-        }
-
-        
-        function openModal(modalName) {
-            modals[modalName].modal.style.display = 'block';
-        }
-
-        function closeModal(modalName) {
-            modals[modalName].modal.style.display = 'none';
-        }
-
-        
-        function toggleSwitch(switchElement) {
-            switchElement.classList.toggle('active');
-        }
-
-        
-        function addMessage(content, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}-message`;
-            
-            const messageContent = document.createElement('div');
-            messageContent.innerHTML = content.replace(/\n/g, '<br>');
-            
-            const messageTime = document.createElement('div');
-            messageTime.className = 'message-time';
-            messageTime.textContent = new Date().toLocaleTimeString([], { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
-            
-            messageDiv.appendChild(messageContent);
-            messageDiv.appendChild(messageTime);
-            
-            messagesContainer.insertBefore(messageDiv, typingIndicator);
-            scrollToBottom();
-        }
-
-        function showTyping() {
-            typingIndicator.style.display = 'flex';
-            scrollToBottom();
-        }
-
-        function hideTyping() {
-            typingIndicator.style.display = 'none';
-        }
-
-        function scrollToBottom() {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        
-        async function getAuraaResponse(userInput) {
-            const backendUrl = 'https://auraa-sb-2007.onrender.com/ask-auraa';
-
-            try {
-                const response = await fetch(backendUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: userInput })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    return `Error from server: ${errorData.response || 'Could not connect.'}`;
-                }
-
-                const data = await response.json();
-                return data.response;
-
-            } catch (error) {
-                console.error("Connection Error:", error);
-                return "I'm having trouble connecting to my core systems. Please ensure the backend server is running and the URL is correct.";
-            }
-        }
-
-        
-        async function handleUserInput() {
-            const message = userInput.value.trim();
-            if (!message) return;
-
-            addMessage(message, 'user');
-            userInput.value = '';
-            showTyping();
-
-            const response = await getAuraaResponse(message);
-            hideTyping();
-            addMessage(response, 'auraa');
-        }
-
-        
-        themeToggle.addEventListener('click', toggleTheme);
-        sendBtn.addEventListener('click', handleUserInput);
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleUserInput();
-        });
-
-      
-        Object.entries(modals).forEach(([name, modal]) => {
-            modal.btn.addEventListener('click', () => openModal(name));
-            modal.close.addEventListener('click', () => closeModal(name));
-        });
-
-        
-        window.addEventListener('click', (e) => {
-            Object.entries(modals).forEach(([name, modal]) => {
-                if (e.target === modal.modal) {
-                    closeModal(name);
-                }
-            });
-        });
-
-        
-        Object.entries(switches).forEach(([name, switchElement]) => {
-            switchElement.addEventListener('click', () => {
-                if (name === 'theme') {
-                    toggleTheme();
-                } else {
-                    toggleSwitch(switchElement);
-                }
-            });
-        });
-
-        
-        window.addEventListener('load', () => {
-            userInput.focus();
-            setTimeout(() => {
-                addMessage("Hi, I'm AURAA made by Sarnab. What can I help you with?", 'auraa');
-            }, 1000);
-        });
-
-        
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                scrollToBottom();
-            }, 250);
         });
     </script>
+
 </body>
 </html>
