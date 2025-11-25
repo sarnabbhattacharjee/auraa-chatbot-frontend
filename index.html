@@ -61,7 +61,7 @@
         #terms-gate {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.98);
             z-index: 9999;
             display: flex;
             justify-content: center;
@@ -151,7 +151,7 @@
             letter-spacing: 1px;
         }
 
-        /* --- THE FIXED GIF SYSTEM (ABSOLUTE CENTERING) --- */
+        /* --- FIXED CCTV GIF --- */
         .cctv-container {
             width: 100%;
             height: 220px;
@@ -190,10 +190,8 @@
 
         .cctv-iframe {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 160%; 
-            height: 160%; 
+            top: 50%; left: 50%;
+            width: 160%; height: 160%; 
             transform: translate(-50%, -50%);
             border: none;
             filter: grayscale(100%) contrast(1.1) sepia(20%);
@@ -270,16 +268,6 @@
             font-family: var(--font-tech);
         }
 
-        .msg-error {
-            align-self: center;
-            background: rgba(255, 0, 85, 0.1);
-            border: 1px solid var(--neon-red);
-            color: var(--neon-red);
-            font-family: var(--font-tech);
-            text-align: center;
-            max-width: 90%;
-        }
-
         .input-bar {
             padding: 20px;
             background: rgba(0,0,0,0.8);
@@ -322,7 +310,6 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* MOBILE */
         @media (max-width: 800px) {
             #main-interface { flex-direction: column; padding: 10px; gap: 10px; }
             .sidebar { width: 100%; order: -1; }
@@ -365,10 +352,8 @@
                 
                 <div class="cctv-container">
                     <div class="click-shield"></div>
-                    
                     <div class="rec-tag">CAM-01</div>
                     <div class="cctv-overlay"></div>
-                    
                     <iframe class="cctv-iframe" 
                         src="https://tenor.com/embed/26766629?autoplay=1&muted=1&controls=0&loop=1&showinfo=0">
                     </iframe>
@@ -384,8 +369,8 @@
                 <div class="defender-header">SYSTEM SPECS</div>
                 <div style="padding: 15px;">
                     <div style="color: var(--neon-blue); font-family: var(--font-tech); font-size: 0.9rem;">
-                        CORE: <span style="color:white">GEMINI API</span><br>
-                        HOST: <span style="color:white">RENDER (FREE TIER)</span><br>
+                        CORE: <span style="color:white">GEMINI 1.5 FLASH</span><br>
+                        HOST: <span style="color:white">LOCAL CLIENT (NO SERVER)</span><br>
                         DEV: <span style="color:white">SARNAB</span>
                     </div>
                 </div>
@@ -395,11 +380,10 @@
         <div class="chat-section">
             <div class="chat-header">
                 <div class="brand">AURAA <span>// AI</span></div>
-                <div style="font-family: var(--font-tech); font-size: 0.9rem; color: var(--neon-blue);">V.3.1.PRO</div>
+                <div style="font-family: var(--font-tech); font-size: 0.9rem; color: var(--neon-blue);">V.3.2.OFFLINE</div>
             </div>
 
-            <div class="messages-area" id="messages">
-                </div>
+            <div class="messages-area" id="messages"></div>
 
             <div class="input-bar">
                 <input type="text" class="cyber-input" id="user-input" placeholder="ENTER PROMPT..." autocomplete="off">
@@ -409,10 +393,19 @@
 
     </div>
 
-    <script>
-        const BACKEND_URL = 'https://auraa-sb-2007.onrender.com/ask-auraa';
-        
-        // DOM
+    <script type="module">
+        import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+        // ==========================================
+        //  PASTE YOUR API KEY BELOW
+        // ==========================================
+        const API_KEY = "AIzaSyDkgkxKJwI6yzmP_s8XgmT0scshISpyJ9o"; 
+        // ==========================================
+
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        // DOM ELEMENTS
         const gate = document.getElementById('terms-gate');
         const main = document.getElementById('main-interface');
         const msgs = document.getElementById('messages');
@@ -423,14 +416,11 @@
         document.getElementById('accept-btn').addEventListener('click', () => {
             gate.style.opacity = '0';
             setTimeout(() => gate.style.display = 'none', 500);
-            
             main.style.filter = 'none';
             main.style.opacity = '1';
-            
             setTimeout(() => {
-                addMsg("SYSTEM ONLINE. WELCOME. DEFENDER IS ACTIVE. HOW CAN I HELP?", 'ai');
+                addMsg("SYSTEM ONLINE. SECURE CONNECTION ESTABLISHED. HOW CAN I HELP?", 'ai');
             }, 800);
-            
             input.focus();
         });
 
@@ -440,7 +430,6 @@
             div.className = `msg msg-${type}`;
             div.innerHTML = text.replace(/\n/g, '<br>');
             
-            // Time
             const time = document.createElement('div');
             time.style.fontSize = '0.7rem';
             time.style.opacity = '0.5';
@@ -458,6 +447,12 @@
             const val = input.value.trim();
             if(!val) return;
 
+            // Check if API Key is missing
+            if (API_KEY === "PASTE_YOUR_GEMINI_KEY_HERE" || API_KEY === "") {
+                addMsg("[SYSTEM ERROR]: API KEY MISSING. PLEASE OPEN THE HTML FILE AND PASTE YOUR KEY.", 'ai');
+                return;
+            }
+
             addMsg(val, 'user');
             input.value = '';
             input.disabled = true;
@@ -468,47 +463,22 @@
             const loadDiv = document.createElement('div');
             loadDiv.className = 'msg msg-ai';
             loadDiv.id = loadId;
-            loadDiv.innerHTML = '<span style="animation:blink 0.5s infinite">> ESTABLISHING UPLINK...</span>';
+            loadDiv.innerHTML = '<span style="animation:blink 0.5s infinite">> PROCESSING DATA...</span>';
             msgs.appendChild(loadDiv);
             msgs.scrollTop = msgs.scrollHeight;
 
             try {
-                // 50 second timeout for Render sleep
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 50000);
-
-                const res = await fetch(BACKEND_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: val }),
-                    signal: controller.signal
-                });
+                const result = await model.generateContent(val);
+                const response = await result.response;
+                const text = response.text();
                 
-                clearTimeout(timeoutId);
                 document.getElementById(loadId).remove();
-
-                if(res.ok) {
-                    const data = await res.json();
-                    addMsg(data.response, 'ai');
-                } else {
-                    // HANDLE 500 ERROR VISUALLY
-                    if (res.status === 500) {
-                        addMsg("[CRITICAL ERROR 500]: REMOTE SERVER FAILURE. \n\nThis means Sarnab's backend code crashed. Please try again in a moment.", 'error');
-                    } else {
-                        addMsg(`[ERROR ${res.status}]: SERVER LINK UNSTABLE.`, 'error');
-                    }
-                }
+                addMsg(text, 'ai');
 
             } catch(e) {
-                const loader = document.getElementById(loadId);
-                if(loader) loader.remove();
-
-                if (e.name === 'AbortError') {
-                    addMsg("[TIMEOUT]: SERVER IS WAKING UP. PLEASE RETRY IN 30 SECONDS.", 'ai');
-                } else {
-                    console.error(e);
-                    addMsg("[CONNECTION FAILURE]: UPLINK LOST.\n\nPOSSIBLE CAUSES:\n1. Backend Sleeping\n2. Internet Offline\n3. CORS Policy (if running local file)", 'error');
-                }
+                document.getElementById(loadId).remove();
+                console.error(e);
+                addMsg("[CRITICAL ERROR]: UNABLE TO CONNECT TO GOOGLE AI. \n\nCHECK YOUR INTERNET OR API KEY.", 'ai');
             }
 
             input.disabled = false;
@@ -518,7 +488,6 @@
 
         btn.addEventListener('click', handleSend);
         input.addEventListener('keypress', e => { if(e.key === 'Enter') handleSend() });
-
     </script>
 </body>
 </html>
