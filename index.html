@@ -1,1220 +1,566 @@
-<!-- This is the main AURAA file -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURAA - Your AI Companion</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>AURAA // SYSTEM CORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --font-primary: 'Inter', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --border-radius-main: 32px;
-            --border-radius-msg: 24px;
-            --border-radius-small: 16px;
-            --shadow-glow: 0 0 40px rgba(123, 31, 162, 0.4), 0 0 80px rgba(0, 188, 212, 0.2);
-            --shadow-ultra: 0 50px 100px -20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
-            --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-red: #ff0055;
+            --bg-dark: #050505;
+            --panel-bg: rgba(10, 10, 16, 0.85);
+            --grid-color: rgba(0, 243, 255, 0.1);
+            --font-main: 'Rajdhani', sans-serif;
+            --font-tech: 'Share Tech Mono', monospace;
         }
 
-        .theme-dark {
-            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --bg-main: radial-gradient(ellipse at top, #1a1a2e 0%, #16213e 40%, #0f0f23 100%);
-            --bg-particles: 
-                radial-gradient(circle at 15% 25%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 85% 75%, rgba(240, 147, 251, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.06) 0%, transparent 50%);
-            --surface: rgba(255, 255, 255, 0.05);
-            --surface-hover: rgba(255, 255, 255, 0.1);
-            --glass: rgba(255, 255, 255, 0.08);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --border: rgba(255, 255, 255, 0.15);
-            --glow-primary: 0 0 60px rgba(102, 126, 234, 0.3);
-            --glow-secondary: 0 0 60px rgba(240, 147, 251, 0.3);
-        }
-
-        .theme-light {
-            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --bg-main: radial-gradient(ellipse at top, #f8fafc 0%, #e2e8f0 40%, #cbd5e1 100%);
-            --bg-particles: 
-                radial-gradient(circle at 15% 25%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 85% 75%, rgba(240, 147, 251, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.03) 0%, transparent 50%);
-            --surface: rgba(255, 255, 255, 0.9);
-            --surface-hover: rgba(255, 255, 255, 0.95);
-            --glass: rgba(255, 255, 255, 0.7);
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --border: rgba(0, 0, 0, 0.1);
-            --glow-primary: 0 0 40px rgba(102, 126, 234, 0.2);
-            --glow-secondary: 0 0 40px rgba(240, 147, 251, 0.2);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: var(--font-primary);
-            background: var(--bg-main);
-            background-attachment: fixed;
-            color: var(--text-primary);
-            overflow-x: hidden;
-            min-height: 100vh;
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: var(--font-main);
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            position: relative;
         }
 
-        
-        .bg-animation {
+        /* =========================================
+           BACKGROUND EFFECTS (The "Max Skill" part)
+           ========================================= */
+        .cyber-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); }
+        }
+
+        .scanline {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-particles);
-            z-index: -2;
-            animation: bgShift 20s ease-in-out infinite;
-        }
-
-        @keyframes bgShift {
-            0%, 100% { transform: translateX(0) translateY(0) scale(1); }
-            33% { transform: translateX(-20px) translateY(-10px) scale(1.02); }
-            66% { transform: translateX(20px) translateY(10px) scale(0.98); }
-        }
-
-        
-        .orb {
-            position: fixed;
-            border-radius: 50%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.5) 51%);
+            background-size: 100% 4px;
             pointer-events: none;
-            filter: blur(1px);
-            animation: float 20s infinite ease-in-out;
-            z-index: -1;
+            z-index: 5;
+            opacity: 0.3;
         }
 
-        .orb-1 {
+        /* =========================================
+           TERMS MODAL (Red Alert Style)
+           ========================================= */
+        #terms-gate {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .gate-box {
+            width: 90%;
+            max-width: 600px;
+            border: 2px solid var(--neon-red);
+            background: rgba(20, 0, 5, 0.9);
+            box-shadow: 0 0 50px rgba(255, 0, 85, 0.3), inset 0 0 30px rgba(255, 0, 85, 0.1);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+        }
+
+        .gate-title {
+            color: var(--neon-red);
+            font-size: 2.5rem;
+            font-family: var(--font-tech);
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--neon-red);
+            animation: glitch 1s infinite;
+        }
+
+        .gate-text {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            border-top: 1px solid rgba(255,0,0,0.3);
+            border-bottom: 1px solid rgba(255,0,0,0.3);
+            padding: 20px 0;
+        }
+
+        .accept-btn {
+            background: var(--neon-red);
+            color: black;
+            font-family: var(--font-tech);
+            font-weight: 900;
+            font-size: 1.2rem;
+            padding: 15px 40px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%);
+        }
+
+        .accept-btn:hover {
+            background: white;
+            box-shadow: 0 0 30px var(--neon-red);
+        }
+
+        /* =========================================
+           MAIN INTERFACE
+           ========================================= */
+        #main-interface {
+            display: flex;
+            height: 100%;
+            z-index: 2;
+            padding: 20px;
+            gap: 20px;
+            filter: blur(10px); /* Initially blurred */
+            transition: filter 0.8s ease;
+        }
+
+        /* --- SIDEBAR (Defender System) --- */
+        .sidebar {
             width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
-            top: -150px;
-            left: -150px;
-            animation-delay: 0s;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .orb-2 {
-            width: 200px;
+        .defender-unit {
+            border: 1px solid var(--neon-blue);
+            background: var(--panel-bg);
+            padding: 10px;
+            position: relative;
+        }
+
+        .defender-header {
+            display: flex;
+            justify-content: space-between;
+            color: var(--neon-blue);
+            font-family: var(--font-tech);
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed var(--neon-blue);
+        }
+
+        .status-blink {
+            color: var(--neon-red);
+            animation: blink 1s infinite;
+            font-weight: bold;
+        }
+
+        /* The Container for the GIF */
+        .cctv-feed {
+            width: 100%;
             height: 200px;
-            background: radial-gradient(circle, rgba(240, 147, 251, 0.12) 0%, transparent 70%);
-            top: 20%;
-            right: -100px;
-            animation-delay: -7s;
+            background: #000;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #333;
+            /* Grayscale/Contrast filter to make the GIF look like a security cam */
+            filter: contrast(1.2) sepia(0.2); 
         }
-
-        .orb-3 {
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(79, 172, 254, 0.1) 0%, transparent 70%);
-            bottom: -125px;
-            left: 30%;
-            animation-delay: -14s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-30px) rotate(120deg); }
-            66% { transform: translateY(15px) rotate(240deg); }
-        }
-
         
-        .nav-header {
-            background: var(--glass);
-            backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid var(--border);
-            padding: 20px 40px;
+        /* Overlay on top of GIF to look like camera screen */
+        .cctv-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .cctv-rec {
+            position: absolute;
+            top: 10px; right: 10px;
+            color: red;
+            font-family: var(--font-tech);
+            font-size: 0.8rem;
+            z-index: 11;
+            animation: blink 1s infinite;
+        }
+
+        .info-panel {
+            flex: 1;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--panel-bg);
+            padding: 20px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .info-panel h3 {
+            color: var(--neon-purple);
+            border-bottom: 1px solid var(--neon-purple);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* --- CHAT AREA --- */
+        .chat-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--neon-blue);
+            background: rgba(5, 5, 10, 0.7);
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.05);
+        }
+
+        .chat-header {
+            padding: 15px 25px;
+            background: rgba(0, 243, 255, 0.05);
+            border-bottom: 1px solid var(--neon-blue);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            z-index: 1000;
         }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: -0.02em;
-            background: var(--primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .brand-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 900;
+        .brand-title {
+            font-size: 1.8rem;
+            font-weight: 700;
             color: white;
-            box-shadow: var(--glow-primary);
-            animation: iconPulse 3s ease-in-out infinite;
+            letter-spacing: 2px;
         }
+        .brand-title span { color: var(--neon-blue); }
 
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); box-shadow: var(--glow-primary); }
-            50% { transform: scale(1.05); box-shadow: var(--glow-secondary); }
-        }
-
-        .nav-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s;
-        }
-
-        .nav-btn:hover {
-            background: var(--surface-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .nav-btn:hover::before {
-            left: 100%;
-        }
-
-        .nav-btn svg {
-            width: 20px;
-            height: 20px;
-            stroke: var(--text-primary);
-            transition: all var(--transition-smooth);
-        }
-
-        .theme-toggle {
-            width: 56px;
-            height: 28px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            position: relative;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-        }
-
-        .theme-toggle::before {
-            content: '';
-            width: 24px;
-            height: 24px;
-            background: var(--primary);
-            border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: all var(--transition-bounce);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .theme-light .theme-toggle::before {
-            transform: translateX(28px);
-        }
-
-       
-        .main-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
-        }
-
-        .chat-container {
-            width: 100%;
-            max-width: 1000px;
-            height: 80vh;
-            background: var(--glass);
-            backdrop-filter: blur(40px) saturate(200%);
-            border: 1px solid var(--border);
-            border-radius: var(--border-radius-main);
-            box-shadow: var(--shadow-ultra);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-            animation: containerEntry 1s var(--transition-bounce);
-        }
-
-        @keyframes containerEntry {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .chat-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--glow-primary);
-            opacity: 0.1;
-            border-radius: var(--border-radius-main);
-            filter: blur(60px);
-            z-index: -1;
-        }
-
-        
         .messages-container {
             flex: 1;
-            padding: 32px;
+            padding: 30px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
         }
 
-        .messages-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .messages-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .messages-container::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
+        /* Scrollbar */
+        .messages-container::-webkit-scrollbar { width: 8px; }
+        .messages-container::-webkit-scrollbar-thumb { background: var(--neon-blue); }
+        .messages-container::-webkit-scrollbar-track { background: #000; }
 
         .message {
             max-width: 80%;
-            padding: 20px 24px;
-            border-radius: var(--border-radius-msg);
+            padding: 15px 20px;
+            font-size: 1rem;
+            line-height: 1.5;
             position: relative;
-            animation: messageSlideIn 0.6s var(--transition-bounce);
-            word-wrap: break-word;
-            line-height: 1.6;
+            animation: slideUp 0.3s ease-out;
         }
 
-        @keyframes messageSlideIn {
-            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .user-message {
-            background: var(--primary);
-            color: white;
+        .msg-user {
             align-self: flex-end;
-            border-bottom-right-radius: 8px;
-            box-shadow: var(--glow-primary);
-        }
-
-        .auraa-message {
-            background: var(--surface);
-            color: var(--text-primary);
-            align-self: flex-start;
-            border-bottom-left-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .message-time {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 8px;
-            font-family: var(--font-mono);
-        }
-
-        .user-message .message-time {
+            background: linear-gradient(90deg, rgba(0,0,0,0.5), rgba(188, 19, 254, 0.2));
+            border-right: 3px solid var(--neon-purple);
+            color: #fff;
             text-align: right;
-            color: rgba(255, 255, 255, 0.7);
         }
 
-        
-        .typing-indicator {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            padding: 16px 24px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--border-radius-msg);
+        .msg-auraa {
             align-self: flex-start;
-            max-width: 120px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: typingBounce 1.4s infinite ease-in-out;
-        }
-
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes typingBounce {
-            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-            40% { transform: scale(1.2); opacity: 1; }
-        }
-
-        
-        .input-container {
-            padding: 32px;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            position: relative;
-        }
-
-        .input-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(102, 126, 234, 0.5) 25%, 
-                rgba(240, 147, 251, 0.5) 50%, 
-                rgba(79, 172, 254, 0.5) 75%, 
-                transparent 100%);
-            animation: inputGlow 3s ease-in-out infinite;
-            opacity: 0;
-            transition: opacity var(--transition-smooth);
-        }
-
-        .input-container:focus-within::before {
-            opacity: 1;
-        }
-
-        @keyframes inputGlow {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
+            background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), rgba(0,0,0,0.5));
+            border-left: 3px solid var(--neon-blue);
+            color: #00f3ff;
+            font-family: var(--font-tech);
         }
 
         .input-wrapper {
+            padding: 20px;
+            background: rgba(0,0,0,0.8);
+            border-top: 1px solid var(--neon-blue);
             display: flex;
-            gap: 16px;
-            align-items: center;
+            gap: 15px;
         }
 
-        .input-field {
+        .cyber-input {
             flex: 1;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 24px;
-            padding: 16px 24px;
-            font-size: 16px;
-            color: var(--text-primary);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--neon-blue);
+            font-family: var(--font-tech);
+            font-size: 1.1rem;
+            padding: 15px;
             outline: none;
-            transition: all var(--transition-smooth);
-            font-family: var(--font-primary);
+            transition: 0.3s;
         }
 
-        .input-field::placeholder {
-            color: var(--text-muted);
-        }
-
-        .input-field:focus {
-            border-color: transparent;
-            background: var(--surface-hover);
-            box-shadow: var(--glow-primary);
-            transform: translateY(-2px);
+        .cyber-input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
         }
 
         .send-btn {
-            width: 56px;
-            height: 56px;
-            background: var(--primary);
+            background: var(--neon-blue);
+            color: black;
             border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 60px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--glow-primary);
-        }
-
-        .send-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: conic-gradient(from 0deg, 
-                rgba(102, 126, 234, 0.8), 
-                rgba(240, 147, 251, 0.8), 
-                rgba(79, 172, 254, 0.8), 
-                rgba(102, 126, 234, 0.8));
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity var(--transition-smooth);
-        }
-
-        .send-btn:hover::before {
-            opacity: 1;
-            animation: rotate 2s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%, 0 20%);
+            transition: 0.2s;
         }
 
         .send-btn:hover {
-            transform: translateY(-4px) scale(1.1);
-            box-shadow: var(--glow-secondary);
-        }
-
-        .send-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
-            position: relative;
-            z-index: 1;
-            transition: all var(--transition-smooth);
-        }
-
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            animation: modalFadeIn 0.3s ease-out;
-        }
-
-        @keyframes modalFadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--glass);
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border);
-            border-radius: var(--border-radius-main);
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: var(--shadow-ultra);
-            animation: modalSlideIn 0.4s var(--transition-bounce);
-        }
-
-        @keyframes modalSlideIn {
-            0% { opacity: 0; transform: translate(-50%, -60%) scale(0.9); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            background: var(--primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .close-btn {
-            width: 32px;
-            height: 32px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-        }
-
-        .close-btn:hover {
-            background: var(--surface-hover);
-            transform: scale(1.1);
-        }
-
-        .modal-body {
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .modal-body p {
-            margin-bottom: 16px;
-        }
-
-        .highlight-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-left: 4px solid;
-            border-left-color: transparent;
-            border-image: var(--primary) 1;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .highlight-box h4 {
-            color: var(--text-primary);
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .highlight-box ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .highlight-box li {
-            padding: 4px 0;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .highlight-box li::before {
-            content: '•';
-            color: var(--text-primary);
-            position: absolute;
-            left: 0;
-        }
-
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .form-input {
-            width: 100%;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 14px;
-            color: var(--text-primary);
-            outline: none;
-            transition: all var(--transition-smooth);
-        }
-
-        .form-input:focus {
-            border-color: transparent;
-            box-shadow: var(--glow-primary);
-        }
-
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 12px 24px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-            margin-right: 12px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--glow-primary);
-        }
-
-        .btn-secondary {
-            background: var(--surface);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--surface-hover);
-            box-shadow: none;
-        }
-
-        
-        .setting-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .setting-item:last-child {
-            border-bottom: none;
-        }
-
-        .setting-info h5 {
-            margin-bottom: 4px;
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        .setting-info p {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        .switch {
-            width: 48px;
-            height: 24px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            position: relative;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-        }
-
-        .switch.active {
-            background: var(--primary);
-            border-color: transparent;
-        }
-
-        .switch-handle {
-            width: 20px;
-            height: 20px;
             background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: all var(--transition-bounce);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 20px var(--neon-blue);
         }
 
-        .switch.active .switch-handle {
-            transform: translateX(24px);
+        /* Animations */
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-purple); }
+            25% { text-shadow: -2px 0 var(--neon-blue), 2px 0 var(--neon-purple); }
+            50% { text-shadow: 2px 0 var(--neon-purple), -2px 0 var(--neon-blue); }
+            100% { text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-purple); }
         }
 
-       
-        @media (max-width: 768px) {
-            .nav-header {
-                padding: 16px 20px;
-            }
-
-            .nav-brand {
-                font-size: 24px;
-                gap: 12px;
-            }
-
-            .brand-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-
-            .nav-controls {
-                gap: 8px;
-            }
-
-            .nav-btn {
-                width: 40px;
-                height: 40px;
-            }
-
-            .main-container {
-                padding: 20px 10px;
-            }
-
-            .chat-container {
-                height: 85vh;
-                border-radius: 24px;
-            }
-
-            .messages-container {
-                padding: 20px;
-                gap: 16px;
-            }
-
-            .message {
-                max-width: 90%;
-                padding: 16px 20px;
-            }
-
-            .input-container {
-                padding: 20px;
-            }
-
-            .input-wrapper {
-                gap: 12px;
-            }
-
-            .send-btn {
-                width: 48px;
-                height: 48px;
-            }
-
-            .modal-content {
-                padding: 24px;
-                border-radius: 20px;
-            }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
-        @media (max-width: 480px) {
-            .chat-container {
-                height: 90vh;
-                border-radius: 16px;
-            }
-
-            .modal-content {
-                padding: 20px;
-                width: 95%;
-            }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
+        /* Mobile adjustments */
+        @media (max-width: 800px) {
+            #main-interface { flex-direction: column; padding: 10px; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; }
+            .defender-unit { width: 50%; }
+            .info-panel { display: none; } /* Hide info on small screens */
+            .gate-title { font-size: 1.5rem; }
         }
     </style>
 </head>
-<body class="theme-dark">
-    
-    <div class="bg-animation"></div>
-    
-    
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+<body>
 
-    
-    <nav class="nav-header">
-        <div class="nav-brand">
-            <div class="brand-icon">A</div>
-            AURAA
-        </div>
-        <div class="nav-controls">
-            <button class="nav-btn" id="info-btn" aria-label="Information">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 16v-4m0-4h.01"></path>
-                </svg>
-            </button>
-            <button class="nav-btn" id="auth-btn" aria-label="Sign In">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-            </button>
-            <button class="nav-btn" id="settings-btn" aria-label="Settings">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
-                </svg>
-            </button>
-            <div class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme"></div>
-        </div>
-    </nav>
+    <div class="scanline"></div>
+    <div class="cyber-grid"></div>
 
-    
-    <div class="main-container">
-        <div class="chat-container">
-            <div class="messages-container" id="messages">
-                <div class="typing-indicator" id="typing">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
+    <div id="terms-gate">
+        <div class="gate-box">
+            <h1 class="gate-title">⚠️ SYSTEM ALERT</h1>
+            <div class="gate-text">
+                <p><strong>SECURITY PROTOCOL INITIATED.</strong></p>
+                <p>By accessing the AURAA Neural Network, you agree to the following mandatory directives:</p>
+                <ul style="text-align: left; margin: 20px 0; padding-left: 20px; list-style: square; color: var(--neon-red);">
+                    <li><span style="color:#ccc">User assumes full liability for all prompts and outputs.</span></li>
+                    <li><span style="color:#ccc">Creation of illegal, harmful, or malicious content is strictly prohibited.</span></li>
+                    <li><span style="color:#ccc">Developer (Sarnab) retains immunity from user misuse.</span></li>
+                    <li><span style="color:#ccc">All interactions are monitored by the DEFENDER SYSTEM.</span></li>
+                </ul>
+                <p style="font-size: 0.8rem; opacity: 0.7;">VIOLATION WILL RESULT IN IMMEDIATE TERMINATION.</p>
             </div>
-            <div class="input-container">
-                <div class="input-wrapper">
-                    <input type="text" 
-                           class="input-field" 
-                           id="user-input" 
-                           placeholder="Ask AURAA anything..." 
-                           autocomplete="off">
-                    <button class="send-btn" id="send-btn" aria-label="Send Message">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+            <button class="accept-btn" id="accept-btn">ACKNOWLEDGE & ENTER</button>
         </div>
     </div>
 
-    
-    <div class="modal" id="info-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">About AURAA</h2>
-                <button class="close-btn" id="info-close" aria-label="Close">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><strong>AURAA's frontend has been developed by Sarnab Bhattacharjee.</strong></p>
-                <p>The brain of AURAA is powered by <strong>Google GEMINI API</strong>. This is because Sarnab doesn't have a powerful laptop or computer to work on API building. If he had one, he would have built his own custom AI system.</p>
-                <p>AURAA is designed to be your intelligent companion, ready to help with various tasks and conversations.</p>
+    <div id="main-interface">
+        
+        <div class="sidebar">
+            <div class="defender-unit">
+                <div class="defender-header">
+                    <span>SECURITY FEED</span>
+                    <span class="status-blink">● LIVE</span>
+                </div>
                 
-                <div class="highlight-box">
-                    <h4>Technical Specifications</h4>
-                    <ul>
-                        <li>Built with modern web technologies</li>
-                        <li>Ultra-premium glass morphism design</li>
-                        <li>Advanced animation system</li>
-                        <li>Responsive design for all devices</li>
-                        <li>Real-time chat interface</li>
-                        <li>Dark/Light theme support</li>
-                        <li>Floating particle background</li>
-                        <li>Hardware-accelerated animations</li>
-                    </ul>
+                <div class="cctv-feed">
+                    <div class="cctv-overlay"></div>
+                    <div class="cctv-rec">REC ●</div>
+                    <div class="tenor-gif-embed" data-postid="26766629" data-share-method="host" data-aspect-ratio="1.13074" data-width="100%" style="height: 100%; pointer-events: none;">
+                        <a href="https://tenor.com/view/cod-warzone-modern-warfare-ghost-riley-gif-26766629">Cod Warzone GIF</a>
+                    </div> 
+                    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    
-    <div class="modal" id="auth-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Sign In to AURAA</h2>
-                <button class="close-btn" id="auth-close" aria-label="Close">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label" for="email">Email Address</label>
-                    <input type="email" class="form-input" id="email" placeholder="Enter your email">
+                <div style="margin-top: 10px; font-family: var(--font-tech); font-size: 0.7rem; color: var(--neon-blue); text-align: center;">
+                    DEFENDER SYSTEM ACTIVE<br>SCANNING PROMPTS...
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="password">Password</label>
-                    <input type="password" class="form-input" id="password" placeholder="Enter your password">
-                </div>
-                <button class="btn">Sign In</button>
-                <button class="btn btn-secondary">Create Account</button>
             </div>
-        </div>
-    </div>
 
-    
-    <div class="modal" id="settings-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Settings</h2>
-                <button class="close-btn" id="settings-close" aria-label="Close">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h5>Dark Mode</h5>
-                        <p>Toggle between dark and light themes</p>
-                    </div>
-                    <div class="switch active" id="theme-switch">
-                        <div class="switch-handle"></div>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h5>Animations</h5>
-                        <p>Enable smooth animations and transitions</p>
-                    </div>
-                    <div class="switch active" id="animations-switch">
-                        <div class="switch-handle"></div>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h5>Sound Effects</h5>
-                        <p>Enable notification sounds</p>
-                    </div>
-                    <div class="switch" id="sound-switch">
-                        <div class="switch-handle"></div>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h5>Auto-scroll</h5>
-                        <p>Automatically scroll to new messages</p>
-                    </div>
-                    <div class="switch active" id="scroll-switch">
-                        <div class="switch-handle"></div>
-                    </div>
-                </div>
+            <div class="info-panel">
+                <h3>SYSTEM SPECS</h3>
+                <p><strong>CORE:</strong> GEMINI API</p>
+                <p><strong>DEV:</strong> SARNAB BHATTACHARJEE</p>
+                <p><strong>BUILD:</strong> V.3.0.PRO</p>
+                <br>
+                <p style="opacity: 0.6; font-size: 0.8rem;">
+                    Note: This system runs on constrained hardware. Response latency is expected.
+                </p>
             </div>
         </div>
+
+        <div class="chat-section">
+            <div class="chat-header">
+                <div class="brand-title">AURAA <span>// AI</span></div>
+                <div style="font-family: var(--font-tech); color: var(--neon-blue);">ONLINE</div>
+            </div>
+
+            <div class="messages-container" id="messages">
+                </div>
+
+            <div class="input-wrapper">
+                <input type="text" class="cyber-input" id="user-input" placeholder="ENTER COMMAND..." autocomplete="off">
+                <button class="send-btn" id="send-btn">SEND</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        
-        const messagesContainer = document.getElementById('messages');
+        // DOM ELEMENTS
+        const termsGate = document.getElementById('terms-gate');
+        const acceptBtn = document.getElementById('accept-btn');
+        const mainInterface = document.getElementById('main-interface');
+        const messages = document.getElementById('messages');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
-        const typingIndicator = document.getElementById('typing');
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
 
-        
-        const modals = {
-            info: {
-                modal: document.getElementById('info-modal'),
-                btn: document.getElementById('info-btn'),
-                close: document.getElementById('info-close')
-            },
-            auth: {
-                modal: document.getElementById('auth-modal'),
-                btn: document.getElementById('auth-btn'),
-                close: document.getElementById('auth-close')
-            },
-            settings: {
-                modal: document.getElementById('settings-modal'),
-                btn: document.getElementById('settings-btn'),
-                close: document.getElementById('settings-close')
-            }
-        };
+        // VARIABLES
+        const BACKEND_URL = 'https://auraa-sb-2007.onrender.com/ask-auraa'; // Sarnab's Server
 
-        
-        const switches = {
-            theme: document.getElementById('theme-switch'),
-            animations: document.getElementById('animations-switch'),
-            sound: document.getElementById('sound-switch'),
-            scroll: document.getElementById('scroll-switch')
-        };
-
-        
-        function toggleTheme() {
-            body.classList.toggle('theme-dark');
-            body.classList.toggle('theme-light');
-            const isDark = body.classList.contains('theme-dark');
-            switches.theme.classList.toggle('active', isDark);
-        }
-
-        
-        function openModal(modalName) {
-            modals[modalName].modal.style.display = 'block';
-        }
-
-        function closeModal(modalName) {
-            modals[modalName].modal.style.display = 'none';
-        }
-
-        
-        function toggleSwitch(switchElement) {
-            switchElement.classList.toggle('active');
-        }
-
-        
-        function addMessage(content, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}-message`;
+        // --- 1. TERMS ACCEPTANCE ---
+        acceptBtn.addEventListener('click', () => {
+            // Play a sound effect if you wanted (optional)
+            termsGate.style.opacity = '0';
+            termsGate.style.pointerEvents = 'none';
             
-            const messageContent = document.createElement('div');
-            messageContent.innerHTML = content.replace(/\n/g, '<br>');
+            // Unblur interface
+            mainInterface.style.filter = 'none';
+
+            // Initial System Boot Message
+            setTimeout(() => {
+                addMessage("SYSTEM INITIALIZED. WELCOME, USER. I AM AURAA (CREATED BY SARNAB). DEFENDER IS WATCHING. HOW MAY I ASSIST?", 'auraa');
+            }, 800);
+        });
+
+        // --- 2. CHAT FUNCTIONS ---
+        function addMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `message msg-${sender}`;
             
-            const messageTime = document.createElement('div');
-            messageTime.className = 'message-time';
-            messageTime.textContent = new Date().toLocaleTimeString([], { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
+            // Allow basic line breaks
+            div.innerHTML = text.replace(/\n/g, '<br>');
             
-            messageDiv.appendChild(messageContent);
-            messageDiv.appendChild(messageTime);
+            // Add time
+            const time = document.createElement('div');
+            time.style.fontSize = '0.7rem';
+            time.style.marginTop = '5px';
+            time.style.opacity = '0.6';
+            time.style.fontFamily = 'var(--font-tech)';
+            time.innerText = new Date().toLocaleTimeString();
+            div.appendChild(time);
+
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        async function handleSend() {
+            const prompt = userInput.value.trim();
+            if (!prompt) return;
+
+            // UI Updates
+            addMessage(prompt, 'user');
+            userInput.value = '';
+            userInput.disabled = true;
             
-            messagesContainer.insertBefore(messageDiv, typingIndicator);
-            scrollToBottom();
-        }
-
-        function showTyping() {
-            typingIndicator.style.display = 'flex';
-            scrollToBottom();
-        }
-
-        function hideTyping() {
-            typingIndicator.style.display = 'none';
-        }
-
-        function scrollToBottom() {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        
-        async function getAuraaResponse(userInput) {
-            const backendUrl = 'https://auraa-sb-2007.onrender.com/ask-auraa';
+            // Loading Effect
+            const loadingId = 'loading-' + Date.now();
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message msg-auraa';
+            loadingDiv.id = loadingId;
+            loadingDiv.innerHTML = '<span style="animation: blink 0.5s infinite">PROCESSING REQUEST...</span>';
+            messages.appendChild(loadingDiv);
+            messages.scrollTop = messages.scrollHeight;
 
             try {
-                const response = await fetch(backendUrl, {
+                const response = await fetch(BACKEND_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: userInput })
+                    body: JSON.stringify({ prompt: prompt })
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    return `Error from server: ${errorData.response || 'Could not connect.'}`;
-                }
-
                 const data = await response.json();
-                return data.response;
+                
+                // Remove loading
+                document.getElementById(loadingId).remove();
 
-            } catch (error) {
-                console.error("Connection Error:", error);
-                return "I'm having trouble connecting to my core systems. Please ensure the backend server is running and the URL is correct.";
-            }
-        }
-
-        
-        async function handleUserInput() {
-            const message = userInput.value.trim();
-            if (!message) return;
-
-            addMessage(message, 'user');
-            userInput.value = '';
-            showTyping();
-
-            const response = await getAuraaResponse(message);
-            hideTyping();
-            addMessage(response, 'auraa');
-        }
-
-        
-        themeToggle.addEventListener('click', toggleTheme);
-        sendBtn.addEventListener('click', handleUserInput);
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleUserInput();
-        });
-
-      
-        Object.entries(modals).forEach(([name, modal]) => {
-            modal.btn.addEventListener('click', () => openModal(name));
-            modal.close.addEventListener('click', () => closeModal(name));
-        });
-
-        
-        window.addEventListener('click', (e) => {
-            Object.entries(modals).forEach(([name, modal]) => {
-                if (e.target === modal.modal) {
-                    closeModal(name);
-                }
-            });
-        });
-
-        
-        Object.entries(switches).forEach(([name, switchElement]) => {
-            switchElement.addEventListener('click', () => {
-                if (name === 'theme') {
-                    toggleTheme();
+                if (response.ok) {
+                    addMessage(data.response, 'auraa');
                 } else {
-                    toggleSwitch(switchElement);
+                    addMessage("SYSTEM ERROR: UNABLE TO CONNECT TO CORE.", 'auraa');
                 }
-            });
-        });
 
-        
-        window.addEventListener('load', () => {
+            } catch (err) {
+                document.getElementById(loadingId).remove();
+                addMessage("CONNECTION FAILURE. CHECK NETWORK STATUS.", 'auraa');
+                console.error(err);
+            }
+
+            userInput.disabled = false;
             userInput.focus();
-            setTimeout(() => {
-                addMessage("Hi, I'm AURAA made by Sarnab. What can I help you with?", 'auraa');
-            }, 1000);
+        }
+
+        // --- 3. EVENT LISTENERS ---
+        sendBtn.addEventListener('click', handleSend);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSend();
         });
 
-        
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                scrollToBottom();
-            }, 250);
-        });
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
